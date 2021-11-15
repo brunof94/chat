@@ -5,12 +5,13 @@ HEADER = 64
 PORT = 5050
 FORMAT = "utf-8"
 DISCONNECT_MESSAGE = "!DISCONECT"
-SERVER = "192.168.56.1"
+SERVER = "127.0.1.1"
 ADDR = (SERVER, PORT)
 
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
+
 
 def send(msg):
     message = msg.encode(FORMAT)
@@ -33,16 +34,21 @@ def clear():
 
 
 def main():
-    exit = False
-    while not exit:
-        _msg = input("Escribe tu mensaje(0 para salir):")
-        if(_msg == "0"):
-            exit = True
+    _exit = False
+    _name = ""
+    while not _exit:
+        if _name != "":
+            _msg = input("Escribe tu mensaje(0 para salir):")
+        else:
+            _msg = input("Escribe tu nombre(0 para salir):")
+            _name = _msg
+        if _msg == "0":
+            _exit = True
+            send(DISCONNECT_MESSAGE)
         else:
             clear()
+            print(_name)
             send(_msg)
-
-    send(DISCONNECT_MESSAGE)
 
 
 if __name__ == "__main__":
